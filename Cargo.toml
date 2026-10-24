@@ -1,0 +1,40 @@
+[workspace]
+members = ["crates/*"]
+resolver = "3"
+
+# Shared dependency versions for every workspace crate — a single source of
+# truth so the crates never skew versions (a git2/serde mismatch would break
+# `#[from]` conversions across a crate boundary).
+[workspace.dependencies]
+thiserror = "2.0.18"
+# No `https`/`ssh`: they pull OpenSSL. Nothing here needs them, so git2 cannot
+# fetch, push or clone.
+git2 = { version = "0.20.4", default-features = false }
+serde = { version = "1.0", features = ["derive"] }
+# `preserve_order`: a `json.` edit rewrites the body, and a replay whose keys
+# came back sorted is not the request that was recorded.
+serde_json = { version = "1.0", features = ["preserve_order"] }
+toml = { version = "0.8", features = ["parse", "display"] }
+sha2 = "0.10"
+
+# The standalone `h5i-browser` binary: a thin wrapper over the engine's own
+# command line (`crates/h5i-browser/src/cli.rs`).
+[package]
+name = "h5i-browser-cli"
+version = "0.1.0"
+edition = "2024"
+description = "h5i browser: a lightweight headless browser written in Rust. No Chromium nor V8."
+
+[[bin]]
+name = "h5i-browser"
+path = "src/main.rs"
+
+[dependencies]
+h5i-browser = { path = "crates/h5i-browser" }
+
+# Boa, from the h5i fork: it adds `Script::bind_to_realm`, which the script
+# engine uses to run the browser prelude once per realm. Published boa 0.22.0
+# does not expose it.
+[patch.crates-io]
+boa_engine = { git = "https://github.com/h5i-dev/boa", rev = "f3d34b44" }
+boa_gc = { git = "https://github.com/h5i-dev/boa", rev = "f3d34b44" }
