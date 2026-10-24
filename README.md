@@ -3,9 +3,9 @@
 A lightweight headless browser for coding agents, written in Rust. No Chromium,
 no V8.
 
-Headless, but it renders: unlike a DOM-only parser, it rasterises the page to
-pixels, so it can take screenshots and stream a live view. The engine is
-assembled rather than written — [Blitz](https://github.com/DioxusLabs/blitz)
+It is headless but it still renders. A DOM-only parser never rasterises the
+page; this one does, so it can take screenshots and stream a live view. The
+engine is assembled rather than written. [Blitz](https://github.com/DioxusLabs/blitz)
 owns the DOM and drives [Stylo](https://github.com/servo/stylo) for CSS,
 `vello_cpu` rasterises on the CPU, and [Boa](https://github.com/boa-dev/boa)
 runs page script. Every request is policy-checked and receipted before it
