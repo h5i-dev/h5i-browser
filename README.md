@@ -1,6 +1,6 @@
 # h5i-browser
 
-A lightweight visual browser engine for coding agents, written in Rust. No
+A lightweight browser engine for coding agents, written in Rust. No
 Chromium, no V8.
 
 The engine is assembled rather than written: [Blitz](https://github.com/DioxusLabs/blitz)
